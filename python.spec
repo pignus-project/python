@@ -47,7 +47,7 @@
 %global with_systemtap 1
 
 # some arches don't have valgrind so we need to disable its support on them
-%ifnarch s390 %{mips} riscv64
+%ifnarch s390 %{mips} riscv64 armv6hl
 %global with_valgrind 1
 %else
 %global with_valgrind 0
@@ -108,7 +108,7 @@ Summary: An interpreted, interactive, object-oriented programming language
 Name: %{python}
 # Remember to also rebase python-docs when changing this:
 Version: 2.7.13
-Release: 1%{?dist}
+Release: 1%{?dist}.pi1
 License: Python
 Group: Development/Languages
 Requires: %{python}-libs%{?_isa} = %{version}-%{release}
@@ -1904,6 +1904,9 @@ rm -fr %{buildroot}
 # ======================================================
 
 %changelog
+* Mon Apr 03 2017 Lubomir Rintel <lkundrak@v3.sk> - 2.7.13-1.pi1
+- Drop valgrind dependency for armv6hl
+
 * Wed Jan 11 2017 Charalampos Stratakis <cstratak@redhat.com> - 2.7.13-1
 - Update to 2.7.13
 
