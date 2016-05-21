@@ -47,7 +47,7 @@
 %global with_systemtap 1
 
 # some arches don't have valgrind so we need to disable its support on them
-%ifnarch s390
+%ifnarch s390 armv6hl
 %global with_valgrind 1
 %else
 %global with_valgrind 0
@@ -108,7 +108,7 @@ Summary: An interpreted, interactive, object-oriented programming language
 Name: %{python}
 # Remember to also rebase python-docs when changing this:
 Version: 2.7.11
-Release: 4%{?dist}
+Release: 4%{?dist}.pi1
 License: Python
 Group: Development/Languages
 Requires: %{python}-libs%{?_isa} = %{version}-%{release}
@@ -2126,6 +2126,9 @@ rm -fr %{buildroot}
 # ======================================================
 
 %changelog
+* Sat May 21 2016 Lubomir Rintel <lkundrak@v3.sk> - 2.7.11-4.pi1
+- Drop valgrind dependency for armv6hl
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 2.7.11-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
