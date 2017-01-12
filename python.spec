@@ -107,8 +107,8 @@
 Summary: An interpreted, interactive, object-oriented programming language
 Name: %{python}
 # Remember to also rebase python-docs when changing this:
-Version: 2.7.12
-Release: 7%{?dist}
+Version: 2.7.13
+Release: 1%{?dist}
 License: Python
 Group: Development/Languages
 Requires: %{python}-libs%{?_isa} = %{version}-%{release}
@@ -180,7 +180,7 @@ Requires: python-pip
 # Source code and patches
 # =======================
 
-Source: http://www.python.org/ftp/python/%{version}/Python-%{version}.tar.xz
+Source: https://www.python.org/ftp/python/%{version}/Python-%{version}.tar.xz
 
 # Work around bug 562906 until it's fixed in rpm-build by providing a fixed
 # version of pythondeps.sh:
@@ -316,7 +316,7 @@ Patch7: python-2.5.1-sqlite-encoding.patch
 # SONAME from a library; we avoid this, apparently to minimize space
 # requirements on the live CD:
 # (rhbz:307221)
-Patch10: 00010-2.7.12-binutils-no-dep.patch
+Patch10: 00010-2.7.13-binutils-no-dep.patch
 
 # Upstream as of Python 2.7.3:
 #  Patch11: python-2.7rc1-codec-ascii-tolower.patch
@@ -349,7 +349,7 @@ Patch55: 00055-systemtap.patch
 # and add the /usr/lib64/pythonMAJOR.MINOR/site-packages to sitedirs, in front of
 # /usr/lib/pythonMAJOR.MINOR/site-packages
 # Not upstream
-Patch102: 00102-2.7.12-lib64.patch
+Patch102: 00102-2.7.13-lib64.patch
 
 # Python 2.7 split out much of the path-handling from distutils/sysconfig.py to
 # a new sysconfig.py (in r77704).
@@ -430,7 +430,7 @@ Patch111: 00111-no-static-lib.patch
 #
 #  See also patch 130 below
 #
-Patch112: 00112-2.7.12-debug-build.patch
+Patch112: 00112-2.7.13-debug-build.patch
 
 
 # 00113 #
@@ -708,14 +708,6 @@ Patch180: 00180-python-add-support-for-ppc64p7.patch
 # Doesn't apply to Python 3, where this is fixed otherwise and works.
 Patch181: 00181-allow-arbitrary-timeout-in-condition-wait.patch
 
-# 00184 #
-# Fix for https://bugzilla.redhat.com/show_bug.cgi?id=979696
-# Fixes build of ctypes against libffi with multilib wrapper
-# Python recognizes ffi.h only if it contains "#define LIBFFI_H",
-# but the wrapper doesn't contain that, which makes the build fail
-# We patch this by also accepting "#define ffi_wrapper_h"
-Patch184: 00184-ctypes-should-build-with-libffi-multilib-wrapper.patch
-
 # 00185 #
 # Makes urllib2 honor "no_proxy" enviroment variable for "ftp:" URLs
 # when ftp_proxy is set
@@ -748,26 +740,6 @@ Patch193: 00193-enable-loading-sqlite-extensions.patch
 
 # 00198 #
 Patch198: 00198-add-rewheel-module.patch
-
-# 00200 #
-# test_gdb.test_threads fails when run within rpmbuild
-# I couldnt reproduce the issue outside of rpmbuild, therefore
-# I skip test for now
-Patch200: 00200-skip-thread-test.patch
-
-# 00209 #
-# Fix test breakage with version 2.2.0 of Expat
-# rhbz#1353919: https://bugzilla.redhat.com/show_bug.cgi?id=1353919
-# FIXED UPSTREAM: http://bugs.python.org/issue27369
-Patch209: 00209-fix-test-pyexpat-failure.patch
-
-# 00242 #
-# HTTPoxy attack (CVE-2016-1000110)
-# https://httpoxy.org/
-# FIXED UPSTREAM: http://bugs.python.org/issue27568
-# Based on a patch by Rémi Rampin
-# Resolves: rhbz#1359175
-Patch242: 00242-CVE-2016-1000110-httpoxy.patch
 
 # (New patches go here ^^^)
 #
@@ -812,7 +784,7 @@ Provides:   python27 = %{version}-%{release}
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-URL: http://www.python.org/
+URL: https://www.python.org/
 
 %description
 Python is an interpreted, interactive, object-oriented programming
@@ -1070,7 +1042,6 @@ mv Modules/cryptmodule.c Modules/_cryptmodule.c
 %patch174 -p1 -b .fix-for-usr-move
 %patch180 -p1
 %patch181 -p1
-%patch184 -p1
 %patch185 -p1
 %patch187 -p1
 %patch189 -p1
@@ -1079,9 +1050,6 @@ mv Modules/cryptmodule.c Modules/_cryptmodule.c
 %if 0%{with_rewheel}
 %patch198 -p1
 %endif
-%patch200 -p1
-%patch209 -p1
-%patch242 -p1
 
 
 # This shouldn't be necesarry, but is right now (2.2a3)
@@ -1936,6 +1904,9 @@ rm -fr %{buildroot}
 # ======================================================
 
 %changelog
+* Wed Jan 11 2017 Charalampos Stratakis <cstratak@redhat.com> - 2.7.13-1
+- Update to 2.7.13
+
 * Thu Sep 29 2016 Miro Hrončok <mhroncok@redhat.com> - 2.7.12-7
 - Provide python27
 
